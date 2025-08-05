@@ -5,9 +5,11 @@ import (
 	"authentication/helpers"
 	"authentication/models"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -41,10 +43,9 @@ func Signup() gin.HandlerFunc {
 		}
 		user.Password = string(hashedPassword)
 
-		if err := config.DB.Create(&user).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
-			return
-		}
+		user.CreatedAt = time.Now()
+		user.UpdatedAt = time.Now()
+		user.UserID = uuid.New().String() // Set sebelum generate token
 
 		accessToken, refreshToken, err := helpers.GenerateTokens(user.UserID, user.Email, user.Role)
 		if err != nil {
@@ -54,11 +55,20 @@ func Signup() gin.HandlerFunc {
 
 		user.Token = accessToken
 		user.RefreshToken = refreshToken
-		config.DB.Save(&user)
 
-		c.JSON(http.StatusOK, gin.H{"message": "Signup successful", "access_token": accessToken, "refresh_token": refreshToken})
+		if err := config.DB.Create(&user).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message":        "Signup successful",
+			"access_token":   accessToken,
+			"refresh_token":  refreshToken,
+		})
 	}
 }
+
 
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {

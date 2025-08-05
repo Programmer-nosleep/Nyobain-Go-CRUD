@@ -8,6 +8,7 @@ import (
 
 type User struct {
 	gorm.Model
+	ID						 uint 		 `grom: "primaryKey"`
 	FirstName      string    `gorm:"size:255;not null" json:"first_name" validate:"required,min=2,max=100"`
 	LastName       string    `gorm:"size:255;not null" json:"last_name" validate:"required,min=2,max=100"`
 	Password       string    `gorm:"size:255;not null" json:"password" validate:"required,min=8"`
