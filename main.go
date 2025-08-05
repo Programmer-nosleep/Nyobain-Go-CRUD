@@ -1,32 +1,26 @@
 package main
 
 import (
-	"crypto/rand"
-	"encoding/base64"
 	"log"
 
-	"authentication/middleware"
+	"authentication/config"
+	"authentication/helpers"
+	"authentication/models"
 	"authentication/routes"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GenerateRandomKey() (string, error) {
-	key := make([]byte, 32)
-	_, err := rand.Read(key)
-	if err != nil {
-		return "", err
-	}
-	return base64.StdEncoding.EncodeToString(key), nil
-}
-
 func main() {
-	key, err := GenerateRandomKey()
+	config.ConnectDatabase()
+	config.DB.AutoMigrate(&models.User{})
+
+	key, err := config.GenerateRandomKey()
 
 	if err != nil {
 		log.Fatalf("Failed to generate random key: %v", err)
 	}
-	middleware.SetJWTKey([]byte(key))
+	helpers.SetJWTKey([]byte(key))
 
 	port := "8080"
 
