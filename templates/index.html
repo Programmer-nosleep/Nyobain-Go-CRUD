@@ -1,9 +1,10 @@
+{{ define "index.html" }}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home Page | Nyobain Golang</title>
+  <title>{{ .Title }}</title>
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
@@ -17,14 +18,16 @@
     </ul>
 
     <div class="nav-auth">
-      <button type="submit">Login</button>
-      <button type="submit"></button>
+      <button class="btn" type="submit">Login</button>
+      <button class="btn" type="submit">Register</button>
     </div>
   </nav>
-  <main class="">
-    <div class="">
-
+  <main class="main-section">
+    <div class="full-contain">
+      <div></div>
     </div>
   </main>
 </body>
 </html>
+
+{{ end }}

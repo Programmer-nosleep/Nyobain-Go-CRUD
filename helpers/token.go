@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"gorm.io/gorm"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -52,6 +53,16 @@ func GenerateTokens(userID, email, role string) (string, string, error) {
 	}
 
 	return accessToken, refreshToken, nil
+}
+
+func UpdateAllToken(db *gorm.DB, signedToken, signedRefreshToken, userID string) error {
+    query := `
+        UPDATE users 
+        SET token = ?, refresh_token = ?, updated_at = ? 
+        WHERE user_id = ?`
+        
+    err := db.Exec(query, signedToken, signedRefreshToken, time.Now(), userID).Error
+    return err
 }
 
 func HashPassword(password string) (string, error) {

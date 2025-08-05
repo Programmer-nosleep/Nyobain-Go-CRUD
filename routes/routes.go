@@ -9,7 +9,7 @@ import (
 
 func SetupRoutes(router *gin.Engine) {
 	router.POST("/signup", controllers.Signup())
-	router.POST("login", controllers.Login())
+	router.POST("/login", controllers.Login())
 
 	protected := router.Group("/", middleware.Authenticate())
 
