@@ -45,7 +45,7 @@ func Signup() gin.HandlerFunc {
 
 		user.CreatedAt = time.Now()
 		user.UpdatedAt = time.Now()
-		user.UserID = uuid.New().String() // Set sebelum generate token
+		user.UserID = uuid.New().String()
 
 		accessToken, refreshToken, err := helpers.GenerateTokens(user.UserID, user.Email, user.Role)
 		if err != nil {

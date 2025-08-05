@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: none;
+}
+
+html {
+  font-family: var();
+  font-size: var();
+}
+
+body {
+  background-color: #fefefe;
+  overflow: hidden;
+}
+
+.nav {
+  width: 100%;
+  padding: 18px;
+  display: flex;
+}
+.nav .nav-link {
+  display: flex;
+}
+.nav .nav-link .nav-list > a {
+  list-style: none;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=style.css.map */

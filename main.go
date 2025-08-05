@@ -23,9 +23,9 @@ func main() {
 	helpers.SetJWTKey([]byte(key))
 
 	port := "8080"
-
 	r := gin.Default()
 
+	r.LoadHTMLFiles("views/*")
 	routes.SetupRoutes(r)
 
 	log.Println("Server is running on port", port)

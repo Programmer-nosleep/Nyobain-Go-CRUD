@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var jwtKey []byte
@@ -51,6 +52,17 @@ func GenerateTokens(userID, email, role string) (string, string, error) {
 	}
 
 	return accessToken, refreshToken, nil
+}
+
+func HashPassword(password *string) *string {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(*password), bcrypt.DefaultCost)
+
+	if err != nil {
+		panic(err)
+	}
+
+	hashedPass := string(bytes)
+	return &hashedPass
 }
 
 func ValidateToken(tokenString string) (*Claims, error) {
