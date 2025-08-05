@@ -54,15 +54,14 @@ func GenerateTokens(userID, email, role string) (string, string, error) {
 	return accessToken, refreshToken, nil
 }
 
-func HashPassword(password *string) *string {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(*password), bcrypt.DefaultCost)
+func HashPassword(password string) (string, error) {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 
 	if err != nil {
 		panic(err)
 	}
 
-	hashedPass := string(bytes)
-	return &hashedPass
+	return string(hash), nil
 }
 
 func ValidateToken(tokenString string) (*Claims, error) {

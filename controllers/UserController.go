@@ -36,13 +36,14 @@ func Signup() gin.HandlerFunc {
 			return
 		}
 
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+		hashedPassword, err := helpers.HashPassword(user.Password)
+
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
 			return
 		}
-		user.Password = string(hashedPassword)
 
+		user.Password = string(hashedPassword)
 		user.CreatedAt = time.Now()
 		user.UpdatedAt = time.Now()
 		user.UserID = uuid.New().String()
